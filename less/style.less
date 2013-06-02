@@ -1,0 +1,296 @@
+// Fonts
+// --------------------------------------------------
+@font-face {
+  font-family: Calibri;
+  src: url(../fonts/calibri.ttf);
+  font-weight: 800;
+}
+
+// CSS3 PROPERTIES
+// --------------------------------------------------
+.background-contain {
+  -webkit-background-size: cover;
+       -o-background-size: cover;
+     -moz-background-size: cover;
+          background-size: cover;
+}
+
+// Border Radius
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+// Single Corner Border Radius
+.border-top-left-radius(@radius) {
+  -webkit-border-top-left-radius: @radius;
+      -moz-border-radius-topleft: @radius;
+          border-top-left-radius: @radius;
+}
+.border-top-right-radius(@radius) {
+  -webkit-border-top-right-radius: @radius;
+      -moz-border-radius-topright: @radius;
+          border-top-right-radius: @radius;
+}
+.border-bottom-right-radius(@radius) {
+  -webkit-border-bottom-right-radius: @radius;
+      -moz-border-radius-bottomright: @radius;
+          border-bottom-right-radius: @radius;
+}
+.border-bottom-left-radius(@radius) {
+  -webkit-border-bottom-left-radius: @radius;
+      -moz-border-radius-bottomleft: @radius;
+          border-bottom-left-radius: @radius;
+}
+
+// Single Side Border Radius
+.border-top-radius(@radius) {
+  .border-top-right-radius(@radius);
+  .border-top-left-radius(@radius);
+}
+.border-right-radius(@radius) {
+  .border-top-right-radius(@radius);
+  .border-bottom-right-radius(@radius);
+}
+.border-bottom-radius(@radius) {
+  .border-bottom-right-radius(@radius);
+  .border-bottom-left-radius(@radius);
+}
+.border-left-radius(@radius) {
+  .border-top-left-radius(@radius);
+  .border-bottom-left-radius(@radius);
+}
+
+// Gradients
+#gradient {
+  .vertical(@startColor: #555, @endColor: #333) {
+    background-color: mix(@startColor, @endColor, 60%);
+    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
+    background-image: linear-gradient(to bottom, @startColor, @endColor); // Standard, IE10
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@startColor),argb(@endColor))); // IE9 and down
+  }
+}
+
+// Reset filters for IE
+.reset-filter() {
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
+}
+
+.clearfix {
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+#wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: auto;
+  background: url(../images/bg.jpg) center center no-repeat;
+  .background-contain;
+}
+
+#content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -123px 0 0 -330px;
+  width: 660px;
+  background: rgba(255, 255, 255, 0.9);
+  .border-radius(6px);
+}
+
+#toolbar,
+#slider {
+  .clearfix;
+}
+
+#toolbar {
+  padding: 0px 19px;
+  color: #fff;
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  #gradient > .vertical(rgba(255, 255, 255, 0.1), rgba(40,40,40, 0.1));
+  background-color: #282828;
+  .border-top-radius(6px);
+}
+
+#header {
+  float: left;
+  padding: 10px 0;
+}
+
+#filter {
+  padding: 5px 0;
+  line-height: 28px;
+  vertical-align: middle;
+  float: right;
+  letter-spacing: 0.02em;
+  .text {
+    margin-right: 8px;
+    padding: 0;
+    height: 28px;
+    line-height: 28px;
+    width: 87px;
+    text-align: center;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    .border-radius(6px);
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3);
+    &:first-child {
+      margin-right: 14px;
+    }
+  }
+}
+
+#slider {
+  position: relative;
+  padding: 0 15px;
+  .slides {
+    overflow: hidden;
+  }
+  .slide {
+    position: relative;
+    padding: 19px 5px 20px;
+    width: 200px;
+    float: left;
+    color: #fff;
+    &.hide {
+      display: none;
+    }
+    img {
+      display: block;
+      min-width: 100%;
+    }
+    h2 {
+      position: absolute;
+      top: 19px;
+      left: 5px;
+      padding: 7px 9px 6px;
+      line-height: 1em;
+      width: 182px;
+      #gradient > .vertical(rgba(255, 255, 255, 0.1), rgba(40,40,40, 0.1));
+      background-color: #1e1e1e;
+    }
+    p {
+      position: absolute;
+      bottom: 20px;
+      left: 5px;
+      margin: 0;
+      padding: 8px 10px;
+      line-height: 1em;
+      letter-spacing: 0.01em;
+      width: 180px;
+      font-weight: bold;
+      background-color: rgba(40,40,40, 0.8);
+    }
+  }
+  .controls {
+    a {
+      position: absolute;
+      top: 50%;
+      width: 32px;
+      height: 31px;
+      margin-top: -15px;
+      overflow: hidden;
+      text-indent: -9999px;
+      background: url(../images/controls.png) no-repeat;
+      &.next { right: 8px; background-position: -32px 0; }
+      &.prev { left:  8px; background-position: 0 0; }
+    }
+  }
+}
+
+.button {
+  padding: 2px 0 3px;
+  width: 80px;
+  height: 28px;
+  line-height: 27px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 16px;
+  font-family: 'VAG Rounded W01 Bold', Arial, sans-serif;
+  font-weight: normal;
+  color: #fff;
+  border: none;
+  .border-radius(6px);
+  #gradient > .vertical(rgba(255, 255, 255, 0.1), rgba(100, 130, 200, 0.1));
+  background-color: #6482c8;
+}
+
+.lt-ie9 {
+  #content {
+    background: #fff;
+  }
+  #filter {
+    .text {
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #000;
+      background: #202020;
+      font-family: Calibri, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      vertical-align: middle;
+    }
+  }
+  #slider {
+    .slide {
+      p {
+        background: #282828;
+      }
+    }
+  }
+}
+
+.lt-ie8 {
+  #content {
+    overflow: hidden;
+  }
+  #slider,
+  #toolbar {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 661px) {
+  #content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -123px 0 0 -330px;
+    // position: relative;
+    // margin: 121px auto;
+    width: 660px;
+    background: rgba(255, 255, 255, 0.9);
+    .border-radius(6px);
+  }
+}
+
+@media (max-width: 660px) {
+  #content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin: -123px 0 0 0px;
+    // margin: 0;
+    // position: relative;
+    // margin: 121px auto;
+    width: 100%;
+    min-width: 197px;
+    background: rgba(255, 255, 255, 0.9);
+    .border-radius(6px);
+  }
+}
