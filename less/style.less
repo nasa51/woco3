@@ -213,6 +213,11 @@
       background: url(../images/controls.png) no-repeat;
       &.next { right: 8px; background-position: -32px 0; }
       &.prev { left:  8px; background-position: 0 0; }
+      &:active,
+      &:focus {
+        outline: none;
+        border: none;
+      }
     }
   }
 }
