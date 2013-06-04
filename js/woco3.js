@@ -1,9 +1,5 @@
-var prev_slide = 0;
 var slide_start = 0;
-var slide_end = 0;
 var w_gallery;
-var cSlide_set = 0;
-var cSlide_display = 0;
 
 // IE getElementsByClassName
 if (typeof document.getElementsByClassName != 'function'){
@@ -46,8 +42,6 @@ function wGallery(slides, name) {
 
 
   this.nextShow = function() {
-    console.log(window._wDisplay);
-    console.log(window._wGallery[window._wCurrent]);
     if (typeof window._wGallery[window._wCurrent][window._wDisplay] != 'undefined') {
       var slide = window._wGallery[window._wCurrent][window._wDisplay];
       var left = document.getElementById('slide' + slide).style.left.replace('px', '');
@@ -67,32 +61,32 @@ function wGallery(slides, name) {
   }
 
   this.nextHide = function() {
-    if (typeof window._wGallery[window._wCurrent + 1] != 'undefined') {
-      if (typeof window._wGallery[window._wCurrent][window._wDisplay] != 'undefined') {
-        var slide = window._wGallery[window._wCurrent][window._wDisplay];
-        var left = document.getElementById('slide' + slide).style.left.replace('px', '');
-        left -= window._wSpeed;
+    if (typeof window._wGallery[window._wCurrent][window._wDisplay] != 'undefined') {
+      var slide = window._wGallery[window._wCurrent][window._wDisplay];
+      var left = document.getElementById('slide' + slide).style.left.replace('px', '');
+      left -= window._wSpeed;
 
-        if (left >= -1 * document.getElementsByClassName('slides')[0].offsetWidth) {
-          document.getElementById('slide' + slide).style.left = left + 'px';
-        } else {
-          window._wDisplay++;
-        }
-
+      if (left >= -1 * document.getElementsByClassName('slides')[0].offsetWidth) {
+        document.getElementById('slide' + slide).style.left = left + 'px';
       } else {
-        // Clear interval
-        clearInterval(window._wInterval);
-        window._wInterval = 0;
-        if (typeof window._wGallery[window._wCurrent + 1] != 'undefined') {
-          window._wCurrent++;
-          window._wDisplay = 0;
-          slide_start = window._wGallery[window._wCurrent][window._wDisplay];
-          window[window._wName].build('left');
-        }
+        window._wDisplay++;
       }
+
     } else {
+      // Clear interval
       clearInterval(window._wInterval);
       window._wInterval = 0;
+      if (typeof window._wGallery[window._wCurrent + 1] != 'undefined') {
+        window._wCurrent++;
+        window._wDisplay = 0;
+        slide_start = window._wGallery[window._wCurrent][window._wDisplay];
+        window[window._wName].build('left');
+      } else {
+        window._wCurrent = 0;
+        window._wDisplay = 0;
+        slide_start = window._wGallery[window._wCurrent][window._wDisplay];
+        window[window._wName].build('left');
+      }
     }
   }
 
@@ -116,41 +110,38 @@ function wGallery(slides, name) {
   }
 
   this.prevHide = function() {
-    if (window._wCurrent >= 0) {
-      if (typeof window._wGallery[window._wCurrent][window._wDisplay] != 'undefined') {
-        var slide = window._wGallery[window._wCurrent][window._wDisplay];
-        var left = document.getElementById('slide' + slide).style.left.replace('px', '') * 1;
-        left += window._wSpeed * 1;
+    if (typeof window._wGallery[window._wCurrent][window._wDisplay] != 'undefined') {
+      var slide = window._wGallery[window._wCurrent][window._wDisplay];
+      var left = document.getElementById('slide' + slide).style.left.replace('px', '') * 1;
+      left += window._wSpeed * 1;
 
-        if (left <= document.getElementsByClassName('slides')[0].offsetWidth) {
-          document.getElementById('slide' + slide).style.left = left + 'px';
-        } else {
-          window._wDisplay--;
-        }
-
+      if (left <= document.getElementsByClassName('slides')[0].offsetWidth) {
+        document.getElementById('slide' + slide).style.left = left + 'px';
       } else {
-        // Clear interval
-        clearInterval(window._wInterval);
-        window._wInterval = 0;
-        window._wCurrent--;
-        if (window._wCurrent >= 0) {
-          window._wDisplay = window._wGallery[window._wCurrent].length - 1;
-          slide_start = window._wGallery[window._wCurrent][0];
-          window[window._wName].build('right');
-        } else {
-          window._wCurrent = 0;
-        }
+        window._wDisplay--;
       }
+
     } else {
+      // Clear interval
       clearInterval(window._wInterval);
       window._wInterval = 0;
+      window._wCurrent--;
+      if (window._wCurrent >= 0) {
+        window._wDisplay = window._wGallery[window._wCurrent].length - 1;
+        slide_start = window._wGallery[window._wCurrent][0];
+        window[window._wName].build('right');
+      } else {
+        window._wCurrent = window._wGallery.length - 1;
+        window._wDisplay = window._wGallery[window._wCurrent].length - 1;
+        slide_start = window._wGallery[window._wCurrent][0];
+        window[window._wName].build('right');
+      }
     }
   }
 
   this.rebuildSlideshow = function (slides, direction) {
     var slide_width = 0;
     var prev_width = 0;
-    prev_slide = 0;
     for (var i = 0; i < slides.length; i++) {
       slides[i].id = 'slide' + i;
       slides[i].className += ' hide';
@@ -170,8 +161,8 @@ function wGallery(slides, name) {
   this.build = function(direction) {
     var slide_width = 0;
     var key = 0;
+    window._wGallery = new Array();
     window._wGallery[key] = new Array();
-    prev_slide = 0;
     for (var i = 0; i < slides.length; i++) {
       slides[i].id = 'slide' + i;
       slides[i].className = slides[i].className.replace(' hide', '');
@@ -197,7 +188,6 @@ function wGallery(slides, name) {
     this.rebuildSlideshow(this.slides, direction);
     clearInterval(window._wInterval);
     if (direction == 'left') {
-      console.log(window._wCurrent);
       window._wDisplay = 0;
       window._wInterval = setInterval(this.nextShow, 1);
     } else {
@@ -209,16 +199,14 @@ function wGallery(slides, name) {
 
 function next() {
   if (!window._wInterval) {
-    if (typeof window._wGallery[window._wCurrent + 1] != 'undefined') {
-      window._wDisplay = 0;
-      window._wInterval = setInterval(w_gallery.nextHide, 1);
-    }
+    window._wDisplay = 0;
+    window._wInterval = setInterval(w_gallery.nextHide, 1);
   }
 }
 
 function prev() {
   if (!window._wInterval) {
-    window._wDisplay--;
+    window._wDisplay = window._wGallery[window._wCurrent].length - 1;
     window._wInterval = setInterval(w_gallery.prevHide, 1);
   }
 }
