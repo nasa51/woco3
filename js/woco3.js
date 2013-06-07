@@ -86,7 +86,7 @@ if (!window.cancelRequestAnimFrame) {
 function wGallery(slides) {
   this.slides    = slides;
   this._wGallery = new Array();
-  this._wSpeed   = 15;
+  this._wSpeed   = this.slides[0].parentNode.offsetWidth * 0.05;
   this._wDisplay = 0;
   this._wCurrent = 0;
   this._wInterval;
@@ -95,12 +95,12 @@ function wGallery(slides) {
   this.nextShow = function() {
     if (typeof this._wGallery[this._wCurrent][this._wDisplay] != 'undefined') {
       var slide = this._wGallery[this._wCurrent][this._wDisplay];
-      var left = document.getElementById('slide' + slide).style.left.replace('px', '');
-      left -= this._wSpeed;
+      var left = document.getElementById('slide' + slide).style.left.replace('px', '') - this._wSpeed;
 
       if (left >= 0) {
         document.getElementById('slide' + slide).style.left = left + 'px';
       } else {
+        document.getElementById('slide' + slide).style.left = '0px';
         this._wDisplay++;
       }
       this._wInterval = window.requestAnimationFrame(this.nextShow.bind(this));
@@ -151,6 +151,7 @@ function wGallery(slides) {
       if (left <= 0) {
         document.getElementById('slide' + slide).style.left = left + 'px';
       } else {
+        document.getElementById('slide' + slide).style.left = '0px';
         this._wDisplay--;
       }
       this._wInterval = window.requestAnimationFrame(this.prevShow.bind(this));
@@ -195,6 +196,7 @@ function wGallery(slides) {
   this.rebuildSlideshow = function (slides, direction) {
     var slide_width = 0;
     var prev_width  = 0;
+    this._wSpeed    = this.slides[0].parentNode.offsetWidth * 0.05;
     for (var i = 0; i < slides.length; i++) {
       slides[i].id = 'slide' + i;
       slides[i].className += ' hide';
